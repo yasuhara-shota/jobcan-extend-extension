@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "My Extension",
+  "version": "4",
+  "content_scripts": [
+    {
+      "matches": ["https://ssl.jobcan.jp/employee/attendance*"],
+      "js": ["script.js"],
+      "run_at": "document_start"
+    }
+  ]
+}
