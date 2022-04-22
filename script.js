@@ -1,3 +1,5 @@
+const INCLUDE_TODAY = false
+
 document.addEventListener("DOMContentLoaded", () => {
   const stat = document.querySelector("#collapseInfo");
   stat.className += " show";
@@ -19,17 +21,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const allWorkedDays = workTimes.filter(
-    (w) => w.isWorkDay && w.time != null && !w.isWorking
+    (w) => w.isWorkDay && w.time != null && (INCLUDE_TODAY || !w.isWorking)
   ).length;
   const workTime = workTimes
-    .filter((w) => w.isWorkDay && w.time != null && !w.isWorking)
+    .filter((w) => w.isWorkDay && w.time != null && (INCLUDE_TODAY || !w.isWorking))
     .reduce((prev, curr) => curr.time + prev, 0);
-  const x = workTime / allWorkedDays;
-
   const y = workTime - allWorkedDays * 8 * 60;
 
-  const h = Math.floor(x / 60);
-  const m = Math.floor(x) % 60;
+  let diffText = minutesToStr(y)
+  if (diffText.match(/^-/)) {
+    diffText = `<span style="color: red;">${diffText}</span>`
+  }
 
   const info = document.createElement("div");
   info.className = "col-lg-6 mb-3";
@@ -56,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
             実労働時間との差分
           </th>
           <td>
-            ${minutesToStr(y)}
+            ${diffText}
           </td>
         </tr>
       </table>
@@ -73,9 +75,16 @@ function parseWorkTimeToMinites(str) {
   return h * 60 + m;
 }
 
+function sign(num) {
+  if (num < 0) {
+    return '-'
+  }
+  return ''
+}
+
 function minutesToStr(min) {
-  const h = Math.floor(min / 60);
+  const hAbs = Math.floor(Math.abs(min) / 60);
   const m = Math.floor(min) % 60;
 
-  return `${h}:${("00" + m.toString()).substr(-1)}`;
+  return `${sign(min)}${hAbs}:${("00" + m.toString()).substr(-2)}`;
 }
