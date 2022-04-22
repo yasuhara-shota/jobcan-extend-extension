@@ -75,9 +75,16 @@ function parseWorkTimeToMinites(str) {
   return h * 60 + m;
 }
 
+function sign(num) {
+  if (num < 0) {
+    return '-'
+  }
+  return ''
+}
+
 function minutesToStr(min) {
-  const h = Math.floor(min / 60);
+  const hAbs = Math.floor(Math.abs(min) / 60);
   const m = Math.floor(min) % 60;
 
-  return `${h}:${("00" + m.toString()).substr(-2)}`;
+  return `${sign(min)}${hAbs}:${("00" + m.toString()).substr(-2)}`;
 }
