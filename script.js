@@ -1,7 +1,7 @@
-const INCLUDE_TODAY = false
+const INCLUDE_TODAY = false;
 
 document.addEventListener("DOMContentLoaded", () => {
-  const stat = document.querySelector("#collapseInfo");
+  const stat = document.querySelector("#search-result > .row");
   stat.className += " show";
 
   const tr = document.querySelectorAll(
@@ -24,13 +24,15 @@ document.addEventListener("DOMContentLoaded", () => {
     (w) => w.isWorkDay && w.time != null && (INCLUDE_TODAY || !w.isWorking)
   ).length;
   const workTime = workTimes
-    .filter((w) => w.isWorkDay && w.time != null && (INCLUDE_TODAY || !w.isWorking))
+    .filter(
+      (w) => w.isWorkDay && w.time != null && (INCLUDE_TODAY || !w.isWorking)
+    )
     .reduce((prev, curr) => curr.time + prev, 0);
   const y = workTime - allWorkedDays * 8 * 60;
 
-  let diffText = minutesToStr(y)
+  let diffText = minutesToStr(y);
   if (diffText.match(/^-/)) {
-    diffText = `<span style="color: red;">${diffText}</span>`
+    diffText = `<span style="color: red;">${diffText}</span>`;
   }
 
   const info = document.createElement("div");
@@ -77,9 +79,9 @@ function parseWorkTimeToMinites(str) {
 
 function sign(num) {
   if (num < 0) {
-    return '-'
+    return "-";
   }
-  return ''
+  return "";
 }
 
 function minutesToStr(min) {
