@@ -86,7 +86,7 @@ function sign(num) {
 
 function minutesToStr(min) {
   const hAbs = Math.floor(Math.abs(min) / 60);
-  const m = Math.floor(min) % 60;
+  const m = Math.floor(Math.abs(min)) % 60;
 
   return `${sign(min)}${hAbs}:${("00" + m.toString()).substr(-2)}`;
 }
