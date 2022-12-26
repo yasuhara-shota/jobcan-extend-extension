@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "My Extension",
+  "name": "Jobcan Show OverTime",
   "version": "4",
   "content_scripts": [
     {
