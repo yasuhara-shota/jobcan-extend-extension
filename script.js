@@ -1,6 +1,7 @@
 const INCLUDE_TODAY = false;
 
 document.addEventListener("DOMContentLoaded", () => {
+  // 統計がデフォルトで非表示になってしまったので表示させる
   const stat = document.querySelector("#search-result > .row");
   stat.className += " show";
 
@@ -8,11 +9,25 @@ document.addEventListener("DOMContentLoaded", () => {
     ".table.jbc-table.text-center.jbc-table-bordered.jbc-table-hover > tbody > tr"
   );
 
+  // 開いているページの年を取る
+  const yearStr = (() => {
+    const tomonth = document.querySelector(
+      ".card-title.row > .col"
+    )?.textContent;
+    return tomonth.substring(0, tomonth.indexOf("年"));
+  })();
+
+  const today = Date.now();
   const workTimes = [];
   for (const content of tr) {
+    // 今日の日付と比較して明日以降だったら残業時間の計算に加えない
+    const date = new Date(
+      `${yearStr}/${content.cells[0].textContent}`
+    ).getTime();
+    const isFuture = today < date;
     workTimes.push({
       time:
-        content.cells[5].textContent.length !== 0
+        !isFuture && content.cells[5].textContent.length !== 0
           ? parseWorkTimeToMinites(content.cells[5].textContent)
           : null,
       isWorkDay: content.cells[1].textContent.length === 0,
